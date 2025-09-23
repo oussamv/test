@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -82,9 +81,8 @@
   <h1 class="j">Bienvenue à FT-STORE</h1>
 
   <div class="container">
-    <h1>Sign-Up</h1>
+    <h1>Login</h1>
     <form method="post">
-      <input type="text" name="nom" placeholder="Entrez votre nom" required> <br>
       <input type="email" name="email" placeholder="Entrez votre Email" required> <br>
       <input type="password" name="pwd" placeholder="Entrez votre Password" required> <br>
       <button type="submit">Se Connecter</button>
@@ -95,17 +93,21 @@
     include("connection.php");
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
       if(!empty($_POST['nom']) || !empty($_POST['email']) || !empty($_POST['pwd'])){
-          $nom = ($_POST['nom']);
+         
           $email = ($_POST['email']);
           $pwd = ($_POST['pwd']);
            $idcom=connexpdo("foot_db");
       if($idcom) 
       {
         try{
-          $req="INSERT INTO users (user_name,email,pwd) VALUES ('$nom','$email','$pwd')";
-          $response=$idcom->exec($req);
-          if($response){
-            $_SESSION['nom']=$nom;
+          $req="SELECT * FROM users where (email = :email AND pwd = :pwd)";
+          $response=$idcom->prepare($req);
+          $response->execute([
+            ':email' => $email,
+            ':pwd' => $pwd
+          ]);
+
+          if($response->rowCount()>0){
             $_SESSION['email']=$email;
             $_SESSION['pwd']=$pwd;
             header("Location: ../front-end/acceuil.php");
@@ -113,7 +115,7 @@
           }
         }
         catch (PDOException $c){
-           echo "<h1> PLEASE CONNECT YOUR DATABASE </h1>  ";
+           echo "<h1> PLEASE CONNECT YOUR DATABASE  ";
         }
     }
       }
