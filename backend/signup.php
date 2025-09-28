@@ -88,6 +88,7 @@
       <input type="email" name="email" placeholder="Entrez votre Email" required> <br>
       <input type="password" name="pwd" placeholder="Entrez votre Password" required> <br>
       <button type="submit">Se Connecter</button>
+      <p> <a href="login.php">Login </a></p>
     </form>
 
     <?php
@@ -102,15 +103,28 @@
       if($idcom) 
       {
         try{
-          $req="INSERT INTO users (user_name,email,pwd) VALUES ('$nom','$email','$pwd')";
-          $response=$idcom->exec($req);
-          if($response){
-            $_SESSION['nom']=$nom;
-            $_SESSION['email']=$email;
-            $_SESSION['pwd']=$pwd;
-            header("Location: ../front-end/acceuil.php");
-            exit;
+          $req1="SELECT email FROM users where (email=:email)";
+          $response1=$idcom->prepare($req1);
+          $response1->execute([
+            ":email"=>$email
+          ]);
+          if($response1->rowCount()>0)
+          {
+            echo "<p style='color: green;'>Already Exits</p>";
           }
+          else{
+              $req= "INSERT INTO users (user_name,email,pwd) VALUES ('$nom' , '$email' , '$pwd')";
+              $response=$idcom->exec($req);
+            if($response){
+              $_SESSION['nom']= $nom;
+              $_SESSION['email']= $email;
+              $_SESSION['pwd']= $pwd;
+              header("Location: ../front-end/acceuil.php");
+              exit;
+          }
+          }
+
+          
         }
         catch (PDOException $c){
            echo "<h1> PLEASE CONNECT YOUR DATABASE </h1>  ";

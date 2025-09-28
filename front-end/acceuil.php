@@ -1,6 +1,10 @@
 <?php
 session_start();
-
+if(empty($_SESSION['nom']) || empty($_SESSION['email']) || empty($_SESSION['pwd']))
+  {
+    header("Location: ../backend/signup.php");
+    exit();
+  }
 ?>
 
 
@@ -95,9 +99,9 @@ session_start();
 <body>
     <nav class="navbar bg-body-tertiary">
   <div class="container">
-    <a class="navbar-brand" href="#">
-      <img src="" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
-      FT-STORE
+    <a class="navbar-brand" href=".">
+      <img src="../images/logo-foot.jpg" alt="Logo" width="100" height="50" class="d-inline-block align-text-top">
+      
     </a>
        <ul class="nav justify-content-center">
   <li class="nav-item">
@@ -112,10 +116,16 @@ session_start();
   <li class="nav-item">
     <a class="nav-link " href="#"> Contctez-nous</a>
   </li>
+  
+    <a href="../backend/deconnexion.php" target="_blank" class="btn rounded" style="background-color: red; color: white; padding: 10px 20px; text-decoration: none; display: inline-block;">
+  Déconnexion
+</a>
+
+    
 </ul>
   </div>
 </nav>
-<h1 style="text-align: center; margin-top: 20px; font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">Welcome To FootBall Store</h1>
+<h1 style="text-align: center; margin-top: 20px; font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">Welcome To FootBall Store , <?php echo $_SESSION['nom'] ?></h1>
 <div id="carouselExample" class="carousel slide"  >
   <div class="carousel-inner">
     <div class="carousel-item active">

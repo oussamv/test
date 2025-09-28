@@ -116,10 +116,15 @@
             header("Location: ../front-end/acceuil.php");
             exit;
           }
+          else{
+           echo "<p style='color: red;'>Check The Email Or Password</p>";
+
+          }
         }
         catch (PDOException $c){
-           echo "<h1> PLEASE CONNECT YOUR DATABASE  ";
+           echo "<h1> PLEASE CONNECT YOUR DATABASE </h1>  ";
         }
+
     }
       }
       
