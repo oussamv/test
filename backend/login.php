@@ -96,7 +96,7 @@
          
           $email = ($_POST['email']);
           $pwd = ($_POST['pwd']);
-           $idcom=connexpdo("foot_db");
+           $idcom=connexpdo("ft_store");
       if($idcom) 
       {
         try{
