@@ -108,8 +108,11 @@
           ]);
 
           if($response->rowCount()>0){
-            $_SESSION['email']=$email;
-            $_SESSION['pwd']=$pwd;
+            $res = $response->fetch(PDO::FETCH_ASSOC);
+            
+            $_SESSION['email'] = $email;
+            $_SESSION['pwd'] = $pwd;
+            $_SESSION['nom'] = $res['user_name'];
             header("Location: ../front-end/acceuil.php");
             exit;
           }
