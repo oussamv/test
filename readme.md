@@ -5,6 +5,11 @@ create table users (
     user_name varchar(50),
     email varchar(50),
     pwd varchar(20));
+<<<<<<< HEAD
+       
+    
+SELECT * FROM users;
+=======
     
 create table shoes (
 id_shoes int primary key auto_increment,
@@ -28,3 +33,4 @@ prix_socks float not null
 
 SELECT * FROM users;
 
+>>>>>>> 432c9aea5b7caa68ab86543f5d13222744e07513

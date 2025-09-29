@@ -43,10 +43,20 @@ if($_SERVER['REQUEST_METHOD'=='POST'])
       if($idcom)
       {
         try{
-          $req='SELECT id_user FROM users WHERE(email=:email)';
-          $response=$idcom->prepare($req);
-          $response->execute(
-            [":email"=>$email]);
+            $req='SELECT id_user FROM users WHERE(email=:email)';
+            $response=$idcom->prepare($req);
+            $response->execute([":email"=>$email]);
+
+            if ($response->rowCount() > 0)
+            {
+                $id = $repoonse->fetch(PDO::FETCH_ASSOC);
+                $id_user = $id['id_user'];
+            }
+
+        }
+        catch( PDOException $c)
+        {
+          echo "Error in database";
         }
         
       } 
