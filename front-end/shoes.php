@@ -1,10 +1,57 @@
 <?php
 session_start();
 if(empty($_SESSION['nom']) || empty($_SESSION['email']) || empty($_SESSION['pwd']))
-  {
+{
     header("Location: ../backend/signup.php");
     exit();
+}
+include("../backend/connection.php");
+
+$idcom = connexpdo('ft_store');
+if ($idcom)
+{
+try{
+    $req = "SELECT * FROM shoes";
+    $response = $idcom->prepare($req);
+    $response->execute();
+
+    if ($response->rowCount() > 0)
+    {
+        $rows = $response->fetchAll(PDO::FETCH_ASSOC);
+    }
+    else
+    {
+        $rows = [];
+    }
+    }
+    catch(PDOException $c){
+        $rows = [];
+    }
+}
+else
+{
+    $rows = [];
+}
+
+
+if($_SERVER['REQUEST_METHOD'=='POST'])
+  {
+    if(!empty($_POST['id_shoes'])){
+      $id_shoes = $_POST['id_shoes'];
+      $email = $_SESSION['email'];
+      $idcom=connexpdo('ft_store');
+      if($idcom)
+      {
+        try{
+          $req='SELECT id_user FROM users WHERE(email=:email)';
+          $response=$idcom->prepare($req);
+          $response->execute(
+            [":email"=>$email]);
+        }
+      } 
+    }
   }
+
 ?>
 
 <!DOCTYPE html>
@@ -92,7 +139,7 @@ if(empty($_SESSION['nom']) || empty($_SESSION['email']) || empty($_SESSION['pwd'
     </a>
        <ul class="nav justify-content-center">
   <li class="nav-item">
-    <a class="nav-link active" aria-current="page" href="shoes.php">Shoes</a>
+    <a class="nav-link active" aria-current="page" href="#">Shoes</a>
   </li>
   <li class="nav-item">
     <a class="nav-link" href="gloves.php">Gloves</a>
@@ -101,97 +148,43 @@ if(empty($_SESSION['nom']) || empty($_SESSION['email']) || empty($_SESSION['pwd'
     <a class="nav-link" href="socks.php">Socks</a>
   </li>
   <li class="nav-item">
-<<<<<<< HEAD
-    <a class="nav-link " href="#"> Contactez-nous</a>
-=======
     <a class="nav-link " href="contact.php"> Contactez-nous</a>
->>>>>>> 432c9aea5b7caa68ab86543f5d13222744e07513
   </li>
   
     <a href="../backend/deconnexion.php" target="_blank" class="btn rounded" style="background-color: red; color: white; padding: 10px 20px; text-decoration: none; display: inline-block;">
   Déconnexion
 </a>
+ <a href="" target="_blank" class="btn rounded" style="color: black; padding: 10px 10px; text-decoration: none; display: inline-block;">
+  Panier
+</a>
+
+
 
     
 </ul>
   </div>
 </nav>
-<h1 style="text-align: center; margin-top: 20px; font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">Welcome To FootBall Store , <?php echo $_SESSION['nom'] ?></h1>
-<div id="carouselExample" class="carousel slide"  >
-  <div class="carousel-inner">
-    <div class="carousel-item active">
-      <img src="../images/FR_F50-Yamal_slider_desktop_1.jpg" class="d-block w-100" alt="...">
-    </div>
-    <div class="carousel-item">
-      <img src="../images/FR_adidas_Predator_Beckham_slider_desktop.jpg" class="d-block w-100" alt="...">
-    </div>
-    <div class="carousel-item">
-      <img src="../images/FR_Mizuno_slider_desktop_1.jpg" class="d-block w-100" alt="...">
-    </div>
-  </div>
-  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Previous</span>
-  </button>
-  <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Next</span>
-  </button>
-</div>
-<h1 style="text-align: center; margin-top: 20px; font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">TOP PRODUCTS</h1>
+<h1 style="text-align: center; margin-top: 20px; font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">Shoes</h1>
+
+
 <div class="container-fluid">
   <div class="row">
-    <div class="col-3">
-      <div class="card h-100">
-        <img src="../images/gloves-1.jpg" class="card-img-top" alt="Card image">
-        <div class="card-body">
-          <h5 class="card-title">Gloves Adidas</h5>
-          <p class="card-text">Protégez votre gardien avec les gants de la marque Stanno, spécialement conçus pour les jeunes joueurs de football - Thunder VI Goalkeeper Gloves.</p>
-          <a href="#" class="btn btn-primary">Add To Cart</a>
-        </div>
-      </div>
-    </div>
+    <?php  foreach($rows as $row): ?>
     <div class="col-3">
       <div class="card h-100">
         <img src="../images/shoes-1.jpg" class="card-img-top" alt="Card image">
         <div class="card-body">
-          <h5 class="card-title">Chaussures de football</h5>
-          <p class="card-text">Découvrez les chaussures de football adidas F50 Elite Lamine FG, alliées de votre performance sur le terrain, alliant confort et style.</p>
-          <a href="#" class="btn btn-primary">Add To Cart</a>
+          <h5 class="card-title">Nom : <?php echo $row['name_shoes']; ?></h5>
+          <p class="card-text">Prix : <?php echo $row['prix_shoes']; ?>$</p>
+          <p class="card-text">Quantite : <?php echo $row['qte']; ?></p>
+            <form method="POST">
+                <input type="hidden" value= <?php echo $row["id_shoes"] ?> >
+                <button class="btn btn-primary">Add To Cart</button>
+            </form>
         </div>
       </div>
     </div>
-    <div class="col-3">
-      <div class="card h-100">
-        <img src="../images/socks-2.jpg" class="card-img-top" alt="Card image">
-        <div class="card-body">
-          <h5 class="card-title">Chaussettes mi-mollet </h5>
-          <p class="card-text">Optimise tes performances sur le terrain avec les chaussettes mi-mollet adidas, alliant confort et technologie avancée pour le football..</p>
-          <a href="#" class="btn btn-primary">Add To Cart</a>
-        </div>
-      </div>
-    </div>
-    <div class="col-3">
-      <div class="card h-100">
-        <img src="../images/shoes-2.jpg" class="card-img-top" alt="Card image">
-        <div class="card-body">
-          <h5 class="card-title">Nike</h5>
-          <p class="card-text">Libérez votre potentiel avec les chaussures de football Nike Mercurial Superfly 10 Elite SG, conçues pour des performances optimales sur le terrain.</p>
-          <a href="#" class="btn btn-primary">Add To Cart</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<h1 style="text-align: center; margin-top: 20px; font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">Most Popular Categories</h1>
-<div class="container">
-  <div class="row g-5">
-    <div class="col-6">
-      <img src="../images/Bloc_1.jpg" alt="Bloc 1" class="img-fluid w-100 h-100 rounded">
-    </div>
-    <div class="col-6">
-      <img src="../images/Bloc2_2.jpg" alt="Bloc 2" class="img-fluid w-100 h-100 rounded">
-    </div>
+    <?php endforeach; ?>
   </div>
 </div>
 <br>
