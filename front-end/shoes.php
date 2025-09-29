@@ -33,6 +33,25 @@ else
     $rows = [];
 }
 
+
+if($_SERVER['REQUEST_METHOD'=='POST'])
+  {
+    if(!empty($_POST['id_shoes'])){
+      $id_shoes = $_POST['id_shoes'];
+      $email = $_SESSION['email'];
+      $idcom=connexpdo('ft_store');
+      if($idcom)
+      {
+        try{
+          $req='SELECT id_user FROM users WHERE(email=:email)';
+          $response=$idcom->prepare($req);
+          $response->execute(
+            [":email"=>$email]);
+        }
+      } 
+    }
+  }
+
 ?>
 
 <!DOCTYPE html>
@@ -153,12 +172,13 @@ else
     <?php  foreach($rows as $row): ?>
     <div class="col-3">
       <div class="card h-100">
-        <img src="../images/shoes-3.jpg" class="card-img-top" alt="Card image">
+        <img src="../images/shoes-1.jpg" class="card-img-top" alt="Card image">
         <div class="card-body">
           <h5 class="card-title">Nom : <?php echo $row['name_shoes']; ?></h5>
           <p class="card-text">Prix : <?php echo $row['prix_shoes']; ?>$</p>
           <p class="card-text">Quantite : <?php echo $row['qte']; ?></p>
             <form method="POST">
+                <input type="hidden" value= <?php echo $row["id_shoes"] ?> >
                 <button class="btn btn-primary">Add To Cart</button>
             </form>
         </div>
