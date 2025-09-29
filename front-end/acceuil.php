@@ -7,19 +7,6 @@ if(empty($_SESSION['nom']) || empty($_SESSION['email']) || empty($_SESSION['pwd'
   }
 ?>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -114,7 +101,7 @@ if(empty($_SESSION['nom']) || empty($_SESSION['email']) || empty($_SESSION['pwd'
     <a class="nav-link" href="#">Socks</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link " href="#"> Contctez-nous</a>
+    <a class="nav-link " href="#"> Contactez-nous</a>
   </li>
   
     <a href="../backend/deconnexion.php" target="_blank" class="btn rounded" style="background-color: red; color: white; padding: 10px 20px; text-decoration: none; display: inline-block;">

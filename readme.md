@@ -5,6 +5,6 @@ create table users (
     user_name varchar(50),
     email varchar(50),
     pwd varchar(20));
-    
+       
     
 SELECT * FROM users;
