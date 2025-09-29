@@ -1,24 +1,39 @@
 <?php
 session_start();
 if(empty($_SESSION['nom']) || empty($_SESSION['email']) || empty($_SESSION['pwd']))
-  {
+{
     header("Location: ../backend/signup.php");
     exit();
-  }
+}
+include("../backend/connection.php");
+
+$idcom = connexpdo('ft_store');
+if ($idcom)
+{
+try{
+    $req = "SELECT * FROM shoes";
+    $response = $idcom->prepare($req);
+    $response->execute();
+
+    if ($response->rowCount() > 0)
+    {
+        $rows = $response->fetchAll(PDO::FETCH_ASSOC);
+    }
+    else
+    {
+        $rows = [];
+    }
+    }
+    catch(PDOException $c){
+        $rows = [];
+    }
+}
+else
+{
+    $rows = [];
+}
+
 ?>
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -135,109 +150,21 @@ if(empty($_SESSION['nom']) || empty($_SESSION['email']) || empty($_SESSION['pwd'
 
 <div class="container-fluid">
   <div class="row">
+    <?php  foreach($rows as $row): ?>
     <div class="col-3">
       <div class="card h-100">
         <img src="../images/shoes-3.jpg" class="card-img-top" alt="Card image">
         <div class="card-body">
-          <h5 class="card-title">Football boots</h5>
-          <p class="card-text">340$</p>
+          <h5 class="card-title">Nom : <?php echo $row['name_shoes']; ?></h5>
+          <p class="card-text">Prix : <?php echo $row['prix_shoes']; ?>$</p>
+          <p class="card-text">Quantite : <?php echo $row['qte']; ?></p>
             <form method="POST">
                 <button class="btn btn-primary">Add To Cart</button>
             </form>
         </div>
       </div>
     </div>
-    <div class="col-3">
-      <div class="card h-100">
-        <img src="../images/shoes-1.jpg" class="card-img-top" alt="Card image">
-        <div class="card-body">
-          <h5 class="card-title">Chaussures de football</h5>
-          <p class="card-text">340$</p>
-          <form method="POST">
-                <button class="btn btn-primary">Add To Cart</button>
-            </form>
-        </div>
-      </div>
-    </div>
-    <div class="col-3">
-      <div class="card h-100">
-        <img src="../images/shoes-4.jpg" class="card-img-top" alt="Card image">
-        <div class="card-body">
-          <h5 class="card-title">Nike</h5>
-          <p class="card-text">340$</p>
-          <a href="#" class="btn btn-primary">Add To Cart</a>
-        </div>
-      </div>
-    </div>
-    <div class="col-3">
-      <div class="card h-100">
-        <img src="../images/shoes-5.jpg" class="card-img-top" alt="Card image">
-        <div class="card-body">
-          <h5 class="card-title">Nike</h5>
-          <p class="card-text">340$</p>
-          <a href="#" class="btn btn-primary">Add To Cart</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<br>
-
-<h1 style="text-align: center; margin-top: 20px; font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;"> New Shoes</h1>
-
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-3">
-      <div class="card h-100">
-        <img src="../images/shoes-3.jpg" class="card-img-top" alt="Card image">
-        <div class="card-body">
-          <h5 class="card-title">Football boots</h5>
-          <p class="card-text text-center">340$</p>
-          <a href="#" class="btn btn-primary">Add To Cart</a>
-        </div>
-      </div>
-    </div>
-    <div class="col-3">
-      <div class="card h-100">
-        <img src="../images/shoes-1.jpg" class="card-img-top" alt="Card image">
-        <div class="card-body">
-          <h5 class="card-title">Chaussures de football</h5>
-          <p class="card-text">340$</p>
-          <a href="#" class="btn btn-primary">Add To Cart</a>
-        </div>
-      </div>
-    </div>
-    <div class="col-3">
-      <div class="card h-100">
-        <img src="../images/shoes-4.jpg" class="card-img-top" alt="Card image">
-        <div class="card-body">
-          <h5 class="card-title">Nike</h5>
-          <p class="card-text">340$</p>
-          <a href="#" class="btn btn-primary">Add To Cart</a>
-        </div>
-      </div>
-    </div>
-    <div class="col-3">
-      <div class="card h-100">
-        <img src="../images/shoes-5.jpg" class="card-img-top" alt="Card image">
-        <div class="card-body">
-          <h5 class="card-title">Nike</h5>
-          <p class="card-text">340$</p>
-          <a href="#" class="btn btn-primary">Add To Cart</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<h1 style="text-align: center; margin-top: 20px; font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">Most Popular Categories</h1>
-<div class="container">
-  <div class="row g-5">
-    <div class="col-6">
-      <img src="../images/Bloc_1.jpg" alt="Bloc 1" class="img-fluid w-100 h-100 rounded">
-    </div>
-    <div class="col-6">
-      <img src="../images/Bloc2_2.jpg" alt="Bloc 2" class="img-fluid w-100 h-100 rounded">
-    </div>
+    <?php endforeach; ?>
   </div>
 </div>
 <br>
