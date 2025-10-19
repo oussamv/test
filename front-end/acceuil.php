@@ -101,11 +101,10 @@ if(empty($_SESSION['nom']) || empty($_SESSION['email']) || empty($_SESSION['pwd'
     <a class="nav-link" href="socks.php">Socks</a>
   </li>
   <li class="nav-item">
-<<<<<<< HEAD
     <a class="nav-link " href="#"> Contactez-nous</a>
-=======
+    <li>
     <a class="nav-link " href="contact.php"> Contactez-nous</a>
->>>>>>> 432c9aea5b7caa68ab86543f5d13222744e07513
+</li>
   </li>
   
     <a href="../backend/deconnexion.php" target="_blank" class="btn rounded" style="background-color: red; color: white; padding: 10px 20px; text-decoration: none; display: inline-block;">

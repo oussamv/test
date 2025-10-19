@@ -34,7 +34,7 @@ else
 }
 
 
-if($_SERVER['REQUEST_METHOD'=='POST'])
+if($_SERVER['REQUEST_METHOD']=='POST')
   {
     if(!empty($_POST['id_shoes'])){
       $id_shoes = $_POST['id_shoes'];
@@ -165,7 +165,7 @@ if($_SERVER['REQUEST_METHOD'=='POST'])
     <a href="../backend/deconnexion.php" target="_blank" class="btn rounded" style="background-color: red; color: white; padding: 10px 20px; text-decoration: none; display: inline-block;">
   Déconnexion
 </a>
- <a href="" target="_blank" class="btn rounded" style="color: black; padding: 10px 10px; text-decoration: none; display: inline-block;">
+ <a href="panier.php" target="_blank" class="btn rounded" style="color: black; padding: 10px 10px; text-decoration: none; display: inline-block;">
   Panier
 </a>
 
@@ -188,9 +188,9 @@ if($_SERVER['REQUEST_METHOD'=='POST'])
           <h5 class="card-title">Nom : <?php echo $row['name_shoes']; ?></h5>
           <p class="card-text">Prix : <?php echo $row['prix_shoes']; ?>$</p>
           <p class="card-text">Quantite : <?php echo $row['qte']; ?></p>
-            <form method="POST">
-                <input type="hidden" value= <?php echo $row["id_shoes"] ?> >
-                <button class="btn btn-primary">Add To Cart</button>
+            <form method="POST" >
+                <input type="hidden" value= <?php echo $row["id_shoes"] ?> name="shoes" >
+                <button class="btn btn-primary" name="cart">Add To Cart</button>
             </form>
         </div>
       </div>
